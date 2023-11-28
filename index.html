@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Country Search</title>
+    <link rel="icon" type="image/x-icon" href="./favicon.png">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <style>
+        .container{
+            border:1px solid rgb(255, 255, 255);
+    background:linear-gradient(145deg,#f3f3f3,rgb(255, 255, 255));
+    box-shadow: inset 1px 1px 3px #d4d4d4,
+    inset -2px -2px 3px rgb(219, 219, 219);
+    color: rgb(255, 255, 255);
+        }
+        .btn{
+            border:1px solid rgb(255, 172, 94);
+    background:linear-gradient(145deg,rgb(194, 94, 0),rgb(255, 159, 70));
+    box-shadow: inset 2px 2px 3px rgb(255, 201, 150),
+    inset -2px -2px 5px rgb(187, 90, 0);
+    color: rgb(255, 255, 255);
+        }
+    </style>
+</head>
+<body  style="background-color: rgb(242, 252, 255);">
+    <div class="container bg-white    rounded-3 mt-5">
+            <h3 class="text-secondary text-uppercase m-4">country details</h3>
+            <div class="d-flex my-3 gap-1">
+                    <input id="input" class="form-control " type="text" placeholder="Type here.."><br>
+                    <button type="button" onclick="search()" class="btn  fw-bold text-white">Search</button>
+        </div>
+            <div id="result" class="row "></div>
+        </div>
+<script>
+
+    function search(){  
+        
+        let CountryName=document.getElementById("input").value
+         if(CountryName==''){
+            alert("Enter Country Name")
+         }
+         else{
+    fetch(`https://restcountries.com/v3.1/name/${CountryName}?fullText=true`)
+    .then(data=>data.json())
+    .then(data=>{
+        displayCountry(data)
+        console.log(data)})
+        .catch(err=>alert(`Invalid Country Name`))
+    
+        function displayCountry(data){
+            for(country of data)
+            result.innerHTML=`
+                                <hr class="text-dark">
+                            <h4 class="px-5  text-dark d-flex justify-content-between" >
+                                 <p>Country : ${country.name.common}</p> 
+                                 <p >Capital : ${country.capital}</p>   
+                            </h4>
+                   
+                    <div class="col text-center my-4">
+                     <img class="img-fluid " style="max-width:300px" src="${country.flags.svg}" alt="">
+                     <p class="text-dark fs-6 fw-medium p-2 mt-2">${country.flags.alt}</p>
+                    </div>
+    
+                     <div class="col text-center my-4">
+                      <img class="img-fluid"  style="max-width:400px; max-height:300px; object-fit:cover; " src="${country.coatOfArms.svg}" alt="">
+                     </div>`
+        }
+    
+    }
+    }
+</script>
+
+</body>
+</html>
